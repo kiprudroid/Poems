@@ -42,7 +42,7 @@ const Layout: React.FC<Props> = ({ children }) => {
       </main>
 
       <footer className={styles.footer}>
-        <p>© {new Date().getFullYear()} Poet's Corner. Classic Poetry for Modern Minds.</p>
+        <p>© {new Date().getFullYear()} <a href="https://www.github.com/kiprudroid">Shadrack Kipruto</a> | Classic Poetry for Modern Minds.</p>
       </footer>
     </div>
   );
