@@ -1,25 +1,25 @@
+import type { ReactNode } from "react";
+import { Navigate, Route, Routes, useParams } from "react-router-dom";
+import { HomeView } from "@/features/home/components/HomeView";
+import { PoemDetailView } from "@/features/poem/components/PoemDetailView";
+import { PoetDetailView } from "@/features/poet/components/PoetDetailView";
+import { PoetIndexView } from "@/features/poet/components/PoetIndexView";
 
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout';
-import Home from './pages/Home/Home';
-import Authors from './pages/Authors/Authors';
-import Poems from './pages/Poems/Poems';
-import Poem from './pages/Poem/Poem';
-
-const App: React.FC = () => {
+const LegacyAuthorRedirect = (): ReactNode => {
+  const { authorName = "" } = useParams();
   return (
-    <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/authors" element={<Authors />} />
-          <Route path="/author/:authorName" element={<Poems />} />
-          <Route path="/poem/:title" element={<Poem />} />
-        </Routes>
-      </Layout>
-    </Router>
+    <Navigate to={`/poet/${authorName}${window.location.search}`} replace />
   );
 };
 
-export default App;
+export const App = (): ReactNode => (
+  <Routes>
+    <Route path="/" element={<HomeView />} />
+    <Route path="/poets" element={<PoetIndexView />} />
+    <Route path="/poet/:poetName" element={<PoetDetailView />} />
+    <Route path="/poem/:title" element={<PoemDetailView />} />
+    <Route path="/authors" element={<Navigate to="/poets" replace />} />
+    <Route path="/author/:authorName" element={<LegacyAuthorRedirect />} />
+    <Route path="*" element={<Navigate to="/" replace />} />
+  </Routes>
+);

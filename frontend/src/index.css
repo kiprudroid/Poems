@@ -1,40 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400..700;1,400..700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Cormorant Garamond", "Georgia", serif;
+  --font-body: "EB Garamond", "Georgia", serif;
+
+  --color-parchment-50: #fdfbf4;
+  --color-parchment-100: #faf6ec;
+  --color-parchment-200: #f3ecda;
+  --color-parchment-300: #e9ddc0;
+  --color-parchment-400: #d9c79c;
+
+  --color-ink-500: #5c5245;
+  --color-ink-600: #423a2e;
+  --color-ink-700: #2e2820;
+  --color-ink-800: #221d16;
+  --color-ink-900: #1a1512;
+
+  --color-gilt-400: #c9a227;
+  --color-gilt-500: #a88420;
+  --color-gilt-600: #8a6d2b;
+
+  --color-oxblood-500: #8c3a3a;
+  --color-oxblood-600: #7c2d2d;
+  --color-oxblood-700: #632222;
+}
+
 :root {
-  font-family: Georgia, 'Times New Roman', serif;
-  line-height: 1.6;
-  font-weight: 400;
+  --background: var(--color-parchment-100);
+  --foreground: var(--color-ink-900);
+  --card: var(--color-parchment-50);
+  --card-foreground: var(--color-ink-900);
+  --muted: var(--color-parchment-200);
+  --muted-foreground: var(--color-ink-500);
+  --border: var(--color-parchment-300);
+  --primary: var(--color-oxblood-600);
+  --primary-foreground: var(--color-parchment-50);
+  --accent: var(--color-gilt-600);
+}
 
-  color-scheme: light dark;
-  color: rgba(0, 0, 0, 0.87);
-  background-color: #fcfcfc;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  font-size: 1.075rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Times New Roman', serif; /* Classical headers */
-  font-weight: 500;
-  margin-top: 0;
+::selection {
+  background-color: var(--color-parchment-300);
 }
 
-a {
-  font-weight: 500;
-  color: #1976d2; /* Material Blue */
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-a:hover {
-  color: #115293; /* Darker blue on hover */
+.verse-body {
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  line-height: 2;
 }
 
-button {
-  font-family: inherit;
+.drop-cap::first-letter {
+  font-family: var(--font-display);
+  font-size: 3.4em;
+  font-weight: 600;
+  float: left;
+  line-height: 0.85;
+  padding-right: 0.12em;
+  color: var(--color-oxblood-600);
 }
