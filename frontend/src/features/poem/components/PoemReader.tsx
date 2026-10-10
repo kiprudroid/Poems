@@ -6,12 +6,20 @@ import { Badge } from "@/features/shared/components/ui/Badge";
 import { Button } from "@/features/shared/components/ui/Button";
 import { Card } from "@/features/shared/components/ui/Card";
 import { OrnamentRule } from "@/features/shared/components/ui/OrnamentRule";
+import { cn } from "@/features/shared/lib/cn";
 
 interface PoemReaderProps {
   poem: Poem;
+  selectedLine?: number | null;
+  onSelectLine?: (index: number) => void;
 }
 
-export const PoemReader = ({ poem }: PoemReaderProps): ReactNode => {
+export const PoemReader = ({
+  poem,
+  selectedLine,
+  onSelectLine,
+}: PoemReaderProps): ReactNode => {
+  const interactive = onSelectLine !== undefined;
   const handleShare = () => {
     void navigator.share?.({
       title: poem.title,
@@ -48,15 +56,38 @@ export const PoemReader = ({ poem }: PoemReaderProps): ReactNode => {
         <OrnamentRule className="mx-auto max-w-xs pt-6" />
       </header>
       <Card className="mx-auto mt-8 max-w-2xl px-6 py-10 sm:px-12">
+        {interactive ? (
+          <p className="pb-4 text-center text-sm tracking-wide text-ink-500 uppercase">
+            Click a line to inspect it with the Companion
+          </p>
+        ) : null}
         <div className="verse-body space-y-2">
-          {poem.lines.map((line, index) => (
-            <p
-              key={`${index}-${line.slice(0, 12)}`}
-              className={index === 0 ? "drop-cap" : undefined}
-            >
-              {line.length === 0 ? " " : line}
-            </p>
-          ))}
+          {poem.lines.map((line, index) =>
+            interactive ? (
+              <button
+                key={`${index}-${line.slice(0, 12)}`}
+                type="button"
+                onClick={() => onSelectLine(index)}
+                aria-pressed={selectedLine === index}
+                aria-label={`Inspect line ${index + 1}`}
+                className={cn(
+                  "block w-full rounded-md px-2 text-left transition-colors hover:bg-parchment-200/70",
+                  selectedLine === index &&
+                    "bg-parchment-200 shadow-[inset_3px_0_0_var(--color-gilt-600)]",
+                  index === 0 && selectedLine !== index && "drop-cap",
+                )}
+              >
+                {line.length === 0 ? " " : line}
+              </button>
+            ) : (
+              <p
+                key={`${index}-${line.slice(0, 12)}`}
+                className={index === 0 ? "drop-cap" : undefined}
+              >
+                {line.length === 0 ? " " : line}
+              </p>
+            ),
+          )}
         </div>
         <OrnamentRule className="pt-8" />
         <div className="flex items-center justify-between pt-6">

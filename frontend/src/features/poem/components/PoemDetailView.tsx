@@ -1,6 +1,8 @@
 import { ArrowLeft } from "lucide-react";
-import type { ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { ExplainPanel } from "@/features/explain/components/ExplainPanel";
+import { useGeminiSettings } from "@/features/explain/services/queries";
 import { PoemReader } from "@/features/poem/components/PoemReader";
 import { usePoemByTitle } from "@/features/poem/services/queries";
 import { SEOConfig } from "@/features/shared/components/SEOConfig";
@@ -15,6 +17,8 @@ export const PoemDetailView = (): ReactNode => {
   const { title = "" } = useParams();
   const decoded = decodeURIComponent(title);
   const { poem, isPending, isError, refetch } = usePoemByTitle(decoded);
+  const [selectedLine, setSelectedLine] = useState<number | null>(null);
+  const settings = useGeminiSettings();
 
   return (
     <>
@@ -60,7 +64,19 @@ export const PoemDetailView = (): ReactNode => {
         />
       ) : null}
       {!isPending && !isError && poem !== null ? (
-        <PoemReader poem={poem} />
+        <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
+          <PoemReader
+            poem={poem}
+            selectedLine={selectedLine}
+            onSelectLine={setSelectedLine}
+          />
+          <ExplainPanel
+            poem={poem}
+            selectedLine={selectedLine}
+            onSelectLine={setSelectedLine}
+            settings={settings}
+          />
+        </div>
       ) : null}
     </>
   );
