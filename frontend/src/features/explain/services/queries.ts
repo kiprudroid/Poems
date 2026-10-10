@@ -1,7 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { explainQueryKeys } from "@/features/explain/keys/index";
-import { generateJson } from "@/features/explain/services/gemini-client";
+import {
+  generateJson,
+  listTextModels,
+} from "@/features/explain/services/gemini-client";
 import {
   buildLinePrompt,
   buildWholePoemPrompt,
@@ -14,7 +17,7 @@ import type { Poem } from "@/features/poem/types/index";
 import { env } from "@/features/shared/env/index";
 
 const KEY_STORAGE = "poets-corner.gemini-key";
-const MODEL_STORAGE = "poets-corner.gemini-model";
+const MODEL_STORAGE = "poets-corner.gemini-model-v2";
 
 export interface GeminiSettings {
   apiKey: string | null;
@@ -97,4 +100,15 @@ export const useLineExplanation = (
     retry: false,
   });
   return { ...query, explanation: query.data ?? null };
+};
+
+export const useAvailableModels = (apiKey: string) => {
+  const query = useQuery({
+    queryKey: [...explainQueryKeys.all, "models"] as const,
+    queryFn: () => listTextModels(apiKey),
+    enabled: false,
+    staleTime: 1000 * 60 * 60,
+    retry: false,
+  });
+  return { ...query, models: query.data ?? [] };
 };

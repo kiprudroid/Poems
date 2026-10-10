@@ -1,5 +1,6 @@
 import { KeyRound, Trash2 } from "lucide-react";
 import { type ReactNode, useState } from "react";
+import { ModelPicker } from "@/features/explain/components/ModelPicker";
 import { geminiKeySchema } from "@/features/explain/types/index";
 import { Button } from "@/features/shared/components/ui/Button";
 import { Dialog } from "@/features/shared/components/ui/Dialog";
@@ -68,6 +69,7 @@ export const ApiKeySettings = ({
           onChange={(event) => setModel(event.target.value)}
           className="rounded-xl font-mono text-base"
         />
+        <ModelPicker apiKey={key} model={model} onPick={setModel} />
         {problem !== null ? (
           <p className="text-oxblood-600">{problem}</p>
         ) : null}
